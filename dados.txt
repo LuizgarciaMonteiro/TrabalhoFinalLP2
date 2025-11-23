@@ -1,0 +1,67 @@
+1
+luiz@gmail.com
+Luiz Henrique
+123.456.789-00
+123
+1
+cristian@gmail.com
+Cristian
+234.567.890-00
+234
+2
+rada@gmail.com
+Rada
+345.678.900-00
+345
+3
+1
+Internet
+2
+luiz@gmail.com
+rada@gmail.com
+3
+Estou sem internet desde ontem.
+luiz@gmail.com
+29/12/2025 04:36:04
+Bastou eu conectar o cabo, e voltou a funcionar.
+rada@gmail.com
+29/12/2025 04:40:06
+Não era só isso... continuo sem rede.
+luiz@gmail.com
+29/12/2025 04:40:52
+3
+2
+Água
+4
+luiz@gmail.com
+null
+1
+Minha pia está seca, preciso lavar as mãos...
+luiz@gmail.com
+29/12/2025 04:36:34
+3
+3
+Luz
+1
+luiz@gmail.com
+null
+1
+Socorro! Está tudo escuro aqui na minha sala. Estou com muito medo!
+luiz@gmail.com
+29/12/2025 04:36:57
+3
+4
+Linha telefônica
+2
+cristian@gmail.com
+rada@gmail.com
+1
+O telefone da minha sala não funciona. Não sou obrigado a gastar meu plano do celular.
+cristian@gmail.com
+29/12/2025 04:38:08
+1
+vitor@gmail.com
+Vitor
+567.890.000-00
+567
+0

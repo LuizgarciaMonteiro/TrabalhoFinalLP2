@@ -1,11 +1,18 @@
 import Atores.Sistema;
-import IO.Entrada;
+import EntradaSaida.Entrada;
+import Persistencia.LeituraEscritaArquivos;
 
 class Main {
     public static void main(String[] args) {
 
-        Entrada e = new Entrada();
         Sistema s = new Sistema();
+        LeituraEscritaArquivos.lerArquivo(s);
+
+        Entrada e = new Entrada();
+
+        System.out.println("\n********************[ BEM VINDO ]********************\n");
+
+        System.out.println(s);
 
         int opcao = e.menuPrincipal();
 
@@ -25,11 +32,14 @@ class Main {
                     break;
 
                 default:
-                    System.out.println("Opção invalida, tente novamente");
+                    System.out.println("\nOpção invalida, tente novamente");
                     break;
             }
+
             opcao = e.menuPrincipal();
         }
-        System.out.println("Até breve.");
+        e.encerrarSistema();
+        LeituraEscritaArquivos.salvarArquivo(s);
+
     }
 }

@@ -7,6 +7,12 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 
+/**
+ * Classe que representa um chamado do sistema.
+ * Os chamdos do sistema possuem numero, titulo, status, cliente solicitante e suporte(atendente) reposnsavel.
+ * o status pode ser (1: para aberto, 2: em andamento, 3: finalizado e 4: cancelado).
+ * Os dados dos chamados podem ser salvos em arquivo, por isso a classe implementa a interface Salvavel
+ */
 public class Chamado implements Salvavel {
 
     private int numero;
@@ -17,15 +23,6 @@ public class Chamado implements Salvavel {
 
     private List<Interacao> interacoes;
 
-    /*public Chamado(int n, String t, Cliente solicitante, Interacao i) {
-
-        this.numero = n;
-        this.titulo = t;
-        this.status = 1;
-        this.solicitante = solicitante;
-        this.interacoes = new ArrayList<>();
-        this.interacoes.add(i);
-    }*/
 
     /**
      * Constrói uma nova instância da classe chamado, dado o número do chamado,

@@ -15,13 +15,26 @@ import java.util.Scanner;
 
 /* LEITURA ESCRITA DOS DADOS EM AQUIVO TEXTO */
 
+
+/**
+ * Classe auxiliar com metodos estaticos para leitura e escrita dos dados do sistema em arquivo.
+ */
 public class LeituraEscritaArquivos {
 
+    /**
+     * lê uma string salva no arquivo.
+     * @param arquivo ja aberto para leitura.
+     */
     public static String lerString(Scanner arquivo) {
         String x = arquivo.nextLine();
         return x;
     }
 
+    /**
+     * lê um inteiro salvo no arquivo.
+     * Lança uma excessão se o valor lido não for um numero inteiro válido.
+     * @param arquivo ja aberto para leitura.
+     */
     public static int lerInt(Scanner arquivo) throws NumberFormatException {
         try {
             String x = arquivo.nextLine();
@@ -35,7 +48,12 @@ public class LeituraEscritaArquivos {
 
     /* MÉTOS PARA LEITURA DOS DADOS SALVO EM ARQUIVO */
 
-
+    /**
+     * metodo principal para leitura do arquivo texto.
+     * Abre o arquivo, faz os tratamentos de erros necessarios e chama os metodos apropriados dependendo do
+     * tipo de objeto que estiver sendo lido (Um cliente, um atendente ou um chamado).
+     * @param s o objeto com os dados do sistema.
+     */
     public static void lerArquivo(Sistema s) {
         FileReader f = null;
 
@@ -62,6 +80,7 @@ public class LeituraEscritaArquivos {
             System.out.println("\nArquivo de dados não encontrado. Nenhum dado carregado.");
         }
         finally {
+            /* Se o arquivo chegou a ser aberto, vamos fecha-lo aqui */
             if (f != null) {
                 try {
                     f.close();
@@ -72,6 +91,11 @@ public class LeituraEscritaArquivos {
         }
     }
 
+    /**
+     * metodo auxiliar para leitura dos dados de um cliente que foram salvos em arquivos.
+     * @param s o objeto com os dados do sistema.
+     * @param arquivo ja aberto para leitura.
+     */
     public static void lerDadosClienteArq(Sistema s, Scanner arquivo) {
         String email = lerString(arquivo);
         String nome = lerString(arquivo);
@@ -79,9 +103,16 @@ public class LeituraEscritaArquivos {
         String senha = lerString(arquivo);
 
         Cliente c = new Cliente(nome, cpf, email, senha);
+        /* Após a criação do objeto com os dados do cliente, ele é adicionado na lista de clientes e de
+        * itens salvaveis do sistema. */
         s.inserirCliente(c);
     }
 
+    /**
+     * metodo auxiliar para leitura dos dados de um suporte que foram salvos em arquivos.
+     * @param s o objeto com os dados do sistema.
+     * @param arquivo ja aberto para leitura.
+     */
     public static void lerDadosSuporteArq(Sistema s, Scanner arquivo) {
         String email = lerString(arquivo);
         String nome = lerString(arquivo);
@@ -89,9 +120,16 @@ public class LeituraEscritaArquivos {
         String senha = lerString(arquivo);
 
         Suporte sup = new Suporte(nome, cpf, email, senha);
+        /* Após a criação do objeto com os dados do suporte, ele é adicionado na lista de suportes e de
+         * itens salvaveis do sistema. */
         s.inserirSuporte(sup);
     }
 
+    /**
+     * metodo auxiliar para leitura dos dados de um chamado que foram salvos em arquivos.
+     * @param s o objeto com os dados do sistema.
+     * @param arquivo ja aberto para leitura.
+     */
     public static void lerDadosChamadoArq(Sistema s, Scanner arquivo) {
         int numero = lerInt(arquivo);
         String titulo = lerString(arquivo);
@@ -100,17 +138,23 @@ public class LeituraEscritaArquivos {
         String emailSolicitante = lerString(arquivo);
         String emailResponsavel = lerString(arquivo);
 
+        /* Após a leitura do email do cliente que abriu o chamado e do atendente reposnsavel,
+         * precisamos encontrar seus respectivos objetos no sistema. */
         Cliente cli = s.getCliente(emailSolicitante);
         Suporte sup = s.getSuporte(emailResponsavel);
 
+        /* O chamado é criado, mas ainda sem as interações */
         Chamado c = new Chamado(numero, titulo, status, cli);
 
+        /* O chamado é inserido na lista de chamados do cliente que criou o chamado
+        * e na lista de chamados de seu atendente responsável (se houver). */
         cli.inserirChamado(c);
         if (sup != null) {
             c.adicionarResponsavel(sup);
             sup.inserirChamado(c);
         }
 
+        /* Leitura da lista de interacoes deste chamado  */
         int nInteracoes = lerInt(arquivo);
         for (int i = 0; i < nInteracoes; i++) {
             String descricao = lerString(arquivo);
@@ -118,26 +162,33 @@ public class LeituraEscritaArquivos {
             Usuario u = s.getUsuario(email);
 
             try {
+                /* lendo do arquivo uma data formatada no padrão (dia/mês/ano hora:minuto:segundo) */
                 String data = lerString(arquivo);
-                DateFormat dataFormatada = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+                DateFormat formato = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+                Date dataFormatada = (Date)formato.parse(data);
 
-                if (cli != null) {
-
-                }
-                c.adicionarInteracao(descricao, u, (Date)dataFormatada.parse(data));
+                c.adicionarInteracao(descricao, u, dataFormatada);
 
             } catch (ParseException e) {
                 System.out.println("Erro ao ler a data da interação no arquivo.");
             }
 
         }
-
+        /* Após a criação do objeto com os dados do chamado, ele é adicionado na lista de chamados e de
+         * itens salvaveis do sistema. */
         s.inserirChamado(c);
 
     }
 
     /* MÉTODOS PARA SALVAR DADOS EM ARQUIVO */
 
+    /**
+     * metodo principal para salvar os dados no arquivo texto.
+     * Abre o arquivo, faz os tratamentos de erros necessarios e chama os metodos apropriados dependendo do
+     * tipo de objeto que estiver sendo escrito (Um cliente, um atendente ou um chamado).
+     * A interface salvavel e o polimorfismo permitem que isso seja feito de forma mais elegante.
+     * @param s o objeto com os dados do sistema.
+     */
     public static void salvarArquivo(Sistema s) {
         FileWriter arquivo = null;
         Formatter f = null;
@@ -145,16 +196,19 @@ public class LeituraEscritaArquivos {
             arquivo = new FileWriter("dados.txt");
             f = new Formatter(arquivo);
 
-            for (Salvavel sal : s.getSalvaveis()) { // Polimorfismo (cada objeto por ser um usuario ou chamado
+            for (Salvavel sal : s.getSalvaveis()) {
+                /* Polimorfismo (cada objeto pode ser um usuario ou chamado) */
                 sal.salvarEmArquivo(f);
             }
 
-            f.format("0\n"); // indica fim dos dados no arquivo
+            /* indica fim dos dados no arquivo */
+            f.format("0\n");
 
         } catch (IOException e) {
             System.out.println("Erro ao criar arquivo em disco.");
         }
         finally {
+            /* Se o arquivo chegou a ser aberto, vamos fecha-lo aqui */
             if  (arquivo != null) {
                 try {
                     arquivo.close();

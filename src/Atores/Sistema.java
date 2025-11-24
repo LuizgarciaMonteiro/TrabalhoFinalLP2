@@ -5,6 +5,10 @@ import Persistencia.Salvavel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe que representa o sistema e armazena as listas com todos os clientes, atendentes e chamados ja criados.
+ * também há uma lista para todos os objetos que podem ser salvos em arquivo.
+ */
 public class Sistema {
 
     private List<Cliente> clientes;
@@ -13,6 +17,9 @@ public class Sistema {
     private List<Salvavel> salvaveis;
     private int nChamadoAtual;
 
+    /**
+     * Constrói uma nova instância de Sistema e inicializa as listas armazenadas.
+     */
     public Sistema() {
         this.clientes = new ArrayList<>();
         this.atendentes = new ArrayList<>();
@@ -21,6 +28,10 @@ public class Sistema {
         this.nChamadoAtual = 0;
     }
 
+    /**
+     * Retorna uma string representando o Sistema.
+     * @return Uma string com o numero de clientes, atendentes e chamados ja cadastrados.
+     */
     public String toString() {
         String retorno = "Clientes cadastrados: " + this.clientes.size() + "\n";
         retorno += "Atendentes cadastrados: " + this.atendentes.size() + "\n";
@@ -58,26 +69,43 @@ public class Sistema {
         }
     }
 
+    /**
+     * Insere um cliente na lista de cliente e de objetos salvaveis em arquivo.
+     */
     public void inserirCliente(Cliente c) {
         this.clientes.add(c);
         this.salvaveis.add(c);
     }
 
+    /**
+     * Insere um suporte na lista de suporte e de objetos salvaveis em arquivo.
+     */
     public void inserirSuporte(Suporte p) {
         this.atendentes.add(p);
         this.salvaveis.add(p);
     }
 
+    /**
+     * Insere um chamado na lista de chamado e de objetos salvaveis em arquivo.
+     */
     public void inserirChamado(Chamado c) {
         this.chamados.add(c);
         this.salvaveis.add(c);
     }
 
+    /**
+     * Gera um numero unico para identificar o chamado.
+     * @return um numero unico para identificar um chamado no sistema.
+     */
     public int gerarNumeroChamado() {
         this.nChamadoAtual += 1;
         return this.nChamadoAtual;
     }
 
+    /**
+     * imprime uma lista com todos os chamados do sistema que ainda não tiverem um suporte responsavel.
+     * @return um boolean indicando se algum chamado foi impressso na tela.
+     */
     public boolean vizualizarChamadosAbertos() {
         boolean achou = false;
         System.out.println("\nCHAMADOS:\n");
@@ -96,7 +124,11 @@ public class Sistema {
         }
     }
 
-
+    /**
+     * Cancela o chamado de um cliente no sistema.
+     * @param numero o identificados do chamado.
+     * @param cliente que abriu o chamado.
+     */
     public void cancelarChamado(int numero, Cliente cliente) {
         boolean achou = false;
         for ( Chamado c : cliente.getChamados()) {
@@ -112,7 +144,11 @@ public class Sistema {
         }
     }
 
-
+    /**
+     * Altera o responsavel por resolver este chamado.
+     * @param numero identificador do chamado.
+     * @param sup o atendente que vai assumir este chamado.
+     */
     public void assumirChamado(int numero, Suporte sup) {
         boolean achou = false;
         for ( Chamado c : this.chamados) {
@@ -130,6 +166,12 @@ public class Sistema {
         }
     }
 
+    /**
+     * reabre um chamado de um cliente que não aceitou sua solução.
+     * @param numero o identificados do chamado.
+     * @param c o cliente que abriu o chamado.
+     * @param descricao o motivo da reabertura do chamado.
+     */
     public void reabrirChamado(int numero, Cliente c, String descricao) {
         boolean achou = false;
         for ( Chamado chamado : c.getChamados()) {
@@ -145,6 +187,12 @@ public class Sistema {
         }
     }
 
+    /**
+     * Muda os dados de um chamado que foi resolvido.
+     * @param numero indentificados do chamado.
+     * @param sup o atendente que resolveu este chamado.
+     * @param descricao a solução do chamado.
+     */
     public void resolverChamado(int numero, Suporte sup, String descricao) {
         boolean achou = false;
         for ( Chamado c : sup.getChamados()) {
@@ -160,6 +208,11 @@ public class Sistema {
         }
     }
 
+    /**
+     * Verifica se algum usuario cadastrado no sistema possui este email.
+     * @param email o email a ser buscado.
+     * @return um booleano indicando se a algum usuario no sistema com esse email.
+     */
     public boolean emailExistente(String email) {
         for (Cliente c : this.clientes) {
             if (c.getEmail().equals(email)) {

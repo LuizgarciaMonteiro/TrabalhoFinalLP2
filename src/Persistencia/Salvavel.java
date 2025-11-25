@@ -7,4 +7,5 @@ import java.util.Formatter;
  */
 public interface Salvavel {
     public void salvarEmArquivo(Formatter f);
+    public String getId();
 }

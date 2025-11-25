@@ -13,6 +13,7 @@ public class Entrada {
     }
 
     /* Métodos para leitura dos dados do programa */
+
     /**
      * lê uma string digitada no teclado
      * @param s o texto mostrado para o usuario. (Ex. digite sua senha:)
@@ -251,7 +252,7 @@ public class Entrada {
         if (c.vizualizarChamados()) {
             try {
                 int numero = this.lerInt("\nDigite o número do chamado: #");
-                s.cancelarChamado(numero, c);
+                s.cancelarChamado(numero);
             }
             catch (NumberFormatException e) {
                 System.out.println(e.getMessage());

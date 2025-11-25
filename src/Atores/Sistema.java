@@ -125,22 +125,51 @@ public class Sistema {
     }
 
     /**
-     * Cancela o chamado de um cliente no sistema.
+     * Remove o chamado da lista de chamados do sistema.
      * @param numero o identificados do chamado.
-     * @param cliente que abriu o chamado.
      */
-    public void cancelarChamado(int numero, Cliente cliente) {
-        boolean achou = false;
-        for ( Chamado c : cliente.getChamados()) {
-            if (numero == c.getNumero() && !c.chamadoCancelado()) {
-                c.cancelarChamado();
-                achou = true;
+    public void cancelarChamado(int numero) {
+        int pos = -1;
+        int i = 0;
+        Cliente solicitante = null;
+        Suporte responsavel = null;
+
+        for ( Chamado c : this.chamados) {
+            if (numero == c.getNumero()) {
+                pos = i;
+                solicitante = c.getSolicitante();
+                responsavel = c.getResponsavel();
             }
+            i += 1;
         }
-        if (achou) {
+        if (pos != -1) {
+            this.chamados.remove(pos);
             System.out.println("\nChamado cancelado com sucesso.");
+            if (solicitante != null) solicitante.cancelarChamado(numero);
+            if (responsavel != null) responsavel.cancelarChamado(numero);
+            cancelarChamadoSalvavel(numero);
         }else {
-        System.out.println("\nChamado não encontrado ou já cancelado.");
+           System.out.println("\nChamado não encontrado ou já cancelado.");
+        }
+    }
+
+    /**
+     * Remove o chamado da lista de chamados a serem salvos no arquivo.
+     * @param numero o identificados do chamado.
+     */
+    public void cancelarChamadoSalvavel(int numero) {
+        int pos = -1;
+        int i = 0;
+
+        for ( Salvavel s : this.salvaveis) {
+            String id = "Chamado #" + numero;
+            if (s.getId().equals(id)) {
+                pos = i;
+            }
+            i += 1;
+        }
+        if (pos != -1) {
+            this.salvaveis.remove(pos);
         }
     }
 

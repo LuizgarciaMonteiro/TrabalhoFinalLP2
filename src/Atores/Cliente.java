@@ -23,17 +23,15 @@ public class Cliente extends Usuario  {
     }
 
     /**
-     * imprime uma lista com todos os chamados do cliente que não foram cancelados.
+     * imprime uma lista com todos os chamados do cliente.
      * @return um boolean indicando se algum chamado foi impressso na tela.
      */
     public boolean vizualizarChamados() {
         boolean achou = false;
         System.out.println("\nCHAMADOS:\n");
         for (Chamado c : this.chamados) {
-            if (!c.chamadoCancelado()) {
-                System.out.println(c);
-                achou = true;
-            }
+            System.out.println(c);
+            achou = true;
         }
 
         if (!achou) {

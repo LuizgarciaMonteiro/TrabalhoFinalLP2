@@ -83,4 +83,9 @@ public class Interacao implements Salvavel {
         f.format("%s\n", dataFormatada);
     }
 
+    @Override
+    public String getId() {
+        return "Interação " + this.data.toString();
+    }
+
 }

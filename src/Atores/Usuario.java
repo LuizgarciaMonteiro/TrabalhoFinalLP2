@@ -100,6 +100,24 @@ public abstract class Usuario implements Salvavel {
     }
 
     /**
+     * Remove o chamado de da lista de chamados do usuario.
+     * @param numero o identificados do chamado.
+     */
+    public void cancelarChamado(int numero) {
+        int pos = -1;
+        int i = 0;
+        for ( Chamado c : this.chamados) {
+            if (numero == c.getNumero()) {
+                pos = i;
+            }
+            i += 1;
+        }
+        if (pos != -1) {
+            this.chamados.remove(pos);
+        }
+    }
+
+    /**
      * Como a classe Usuário implementa a interface Salvavel, é preciso implementar este metodo.
      * Define como os dados de um usuário serão salvos em um arquivo texto.
      * @param f um objeto da classe Formatter
@@ -109,6 +127,10 @@ public abstract class Usuario implements Salvavel {
         f.format("%s\n", this.nome);
         f.format("%s\n", this.cpf);
         f.format("%s\n", this.senha);
+    }
+
+    public String getId() {
+        return "Usuário " + this.email;
     }
 
 }

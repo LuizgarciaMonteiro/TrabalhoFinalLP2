@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Classe que representa um chamado do sistema.
  * Os chamdos do sistema possuem numero, titulo, status, cliente solicitante e suporte(atendente) reposnsavel.
- * o status pode ser (1: para aberto, 2: em andamento, 3: finalizado e 4: cancelado).
+ * o status pode ser (1: para aberto, 2: em andamento, 3: finalizado).
  * Os dados dos chamados podem ser salvos em arquivo, por isso a classe implementa a interface Salvavel
  */
 public class Chamado implements Salvavel {
@@ -29,7 +29,7 @@ public class Chamado implements Salvavel {
      * o título do chamado, o status do chamado e o cliente que abriu o chamado.
      * @param n o número do chamado
      * @param t o titulo do chamado
-     * @param status (1: para aberto, 2: em andamento, 3: finalizado e 4: cancelado) do chamado.
+     * @param status (1: para aberto, 2: em andamento, 3: finalizado) do chamado.
      * @param solicitante seria o cliente que abriu o chamado.
      *
      */
@@ -66,8 +66,6 @@ public class Chamado implements Salvavel {
             case 3:
                 chamado += "Finalizado" + "\n";
                 break;
-            case 4:
-                chamado += "Cancelado" + "\n";
 
         }
         return chamado;
@@ -86,11 +84,27 @@ public class Chamado implements Salvavel {
         return this.numero;
     }
 
+    public Cliente getSolicitante() {
+        return this.solicitante;
+    }
+
+    public Suporte getResponsavel() {
+        return this.responsavel;
+    }
+
     /**
      * Altera um status do chamado para o valor recebido como parâmetro.
      */
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    /**
+     * retorna se o chamado já foi atribuido a alguem  do suporte
+     * @return um booleano informando se o chamado já possui um suporte responsavel.
+     */
+    public boolean possuiResponsavel() {
+        return this.responsavel != null;
     }
 
     /**
@@ -117,27 +131,12 @@ public class Chamado implements Salvavel {
         return this.status == 3;
     }
 
-    /**
-     * retorna se o status do chamado está: cancelado
-     * @return um booleano informando se o chamado está cancelado.
-     */
-    public boolean chamadoCancelado() {
-        return this.status == 4;
-    }
-
-    /**
-     * altera o status do chamado para cancelado.
-     * cancela o chamado do sistema.
-     */
-    public void cancelarChamado() {
-        this.status = 4;
-    }
 
     /**
      * metodo que insere uma nova interação no chamado
      * @param descricao para descrição do chamado, ex: resolucao ou retorno.
      * @param u seria o usuario que realizou a interação.
-     * @param status é como o chamado está: Aberto, em andamento ou fechado ou cancelado
+     * @param status é como o chamado está: Aberto, em andamento ou fechado
      */
     public void adicionarInteracao(String descricao, Usuario u, int status) {
 
@@ -191,6 +190,11 @@ public class Chamado implements Salvavel {
         for (Interacao i : this.interacoes) {
             i.salvarEmArquivo(f);
         }
+    }
+
+    @Override
+    public String getId() {
+        return "Chamado #" + this.numero;
     }
 
 }

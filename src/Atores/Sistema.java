@@ -209,13 +209,13 @@ public class Sistema {
 
     /**
      * Muda os dados de um chamado que foi resolvido.
-     * @param numero indentificados do chamado.
-     * @param sup o atendente que resolveu este chamado.
+     * @param numero indentificador do chamado.
+     * @param sup o atendente que vai resolver este chamado.
      * @param descricao a solução do chamado.
      */
     public void resolverChamado(int numero, Suporte sup, String descricao) {
         boolean achou = false;
-        for ( Chamado c : this.chamados) {
+        for (Chamado c : this.chamados) {
             if (c.possuiResponsavel() && sup.equals(c.getResponsavel()) && numero == c.getNumero() && c.chamadoEmAndamento()) {
                 c.adicionarInteracao(descricao, sup, 3);
                 achou = true;
@@ -231,7 +231,7 @@ public class Sistema {
     /**
      * Verifica se algum usuario cadastrado no sistema possui este email.
      * @param email o email a ser buscado.
-     * @return um booleano indicando se a algum usuario no sistema com esse email.
+     * @return um booleano indicando se ha algum usuario no sistema com esse email.
      */
     public boolean emailExistente(String email) {
         for (Cliente c : this.clientes) {

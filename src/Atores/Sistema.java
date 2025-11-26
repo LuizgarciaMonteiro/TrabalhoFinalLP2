@@ -1,7 +1,5 @@
 package Atores;
 
-import Persistencia.Salvavel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,6 @@ public class Sistema {
     private List<Cliente> clientes;
     private List<Suporte> atendentes;
     private List<Chamado> chamados;
-    private List<Salvavel> salvaveis;
     private int nChamadoAtual;
 
     /**
@@ -24,7 +21,6 @@ public class Sistema {
         this.clientes = new ArrayList<>();
         this.atendentes = new ArrayList<>();
         this.chamados = new ArrayList<>();
-        this.salvaveis = new ArrayList<>();
         this.nChamadoAtual = 0;
     }
 
@@ -40,6 +36,23 @@ public class Sistema {
         return retorno;
     }
 
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public List<Suporte> getAtendentes() {
+        return atendentes;
+    }
+
+    public List<Chamado> getChamados() {
+        return chamados;
+    }
+
+    /**
+     * Dado um email retorna o cliente com aquele email
+     * @param email o email do cliente a ser buscado.
+     * @return o objeto cliente que possui aquele email.
+     */
     public Cliente getCliente(String email){
         for (Cliente c : this.clientes) {
             if (email.equals(c.getEmail())) {
@@ -49,7 +62,11 @@ public class Sistema {
         return null;
     }
 
-
+    /**
+     * Dado um email retorna o suporte com aquele email
+     * @param email o email do suporte a ser buscado.
+     * @return o objeto suporte que possui aquele email.
+     */
     public Suporte getSuporte(String email) {
         for (Suporte sup : this.atendentes) {
             if (email.equals(sup.getEmail())) {
@@ -59,6 +76,11 @@ public class Sistema {
         return null;
     }
 
+    /**
+     * Dado um email retorna o usuario com aquele email
+     * @param email o email do usuari a ser buscado.
+     * @return o objeto usuario que possui aquele email.
+     */
     public Usuario getUsuario(String email) {
         Cliente c = this.getCliente(email);
         if (c != null) {
@@ -74,7 +96,6 @@ public class Sistema {
      */
     public void inserirCliente(Cliente c) {
         this.clientes.add(c);
-        this.salvaveis.add(c);
     }
 
     /**
@@ -82,7 +103,6 @@ public class Sistema {
      */
     public void inserirSuporte(Suporte p) {
         this.atendentes.add(p);
-        this.salvaveis.add(p);
     }
 
     /**
@@ -90,7 +110,6 @@ public class Sistema {
      */
     public void inserirChamado(Chamado c) {
         this.chamados.add(c);
-        this.salvaveis.add(c);
     }
 
     /**
@@ -131,45 +150,18 @@ public class Sistema {
     public void cancelarChamado(int numero) {
         int pos = -1;
         int i = 0;
-        Cliente solicitante = null;
-        Suporte responsavel = null;
 
         for ( Chamado c : this.chamados) {
             if (numero == c.getNumero()) {
                 pos = i;
-                solicitante = c.getSolicitante();
-                responsavel = c.getResponsavel();
             }
             i += 1;
         }
         if (pos != -1) {
             this.chamados.remove(pos);
             System.out.println("\nChamado cancelado com sucesso.");
-            if (solicitante != null) solicitante.cancelarChamado(numero);
-            if (responsavel != null) responsavel.cancelarChamado(numero);
-            cancelarChamadoSalvavel(numero);
         }else {
            System.out.println("\nChamado não encontrado ou já cancelado.");
-        }
-    }
-
-    /**
-     * Remove o chamado da lista de chamados a serem salvos no arquivo.
-     * @param numero o identificados do chamado.
-     */
-    public void cancelarChamadoSalvavel(int numero) {
-        int pos = -1;
-        int i = 0;
-
-        for ( Salvavel s : this.salvaveis) {
-            String id = "Chamado #" + numero;
-            if (s.getId().equals(id)) {
-                pos = i;
-            }
-            i += 1;
-        }
-        if (pos != -1) {
-            this.salvaveis.remove(pos);
         }
     }
 
@@ -183,7 +175,6 @@ public class Sistema {
         for ( Chamado c : this.chamados) {
             if (numero == c.getNumero() && c.chamadoAberto()) {
                 c.setStatus(2);
-                sup.assumirChamado(c);
                 c.adicionarResponsavel(sup);
                 achou = true;
             }
@@ -203,8 +194,8 @@ public class Sistema {
      */
     public void reabrirChamado(int numero, Cliente c, String descricao) {
         boolean achou = false;
-        for ( Chamado chamado : c.getChamados()) {
-            if (numero == chamado.getNumero() && chamado.chamadoFinalizado()) {
+        for ( Chamado chamado : this.chamados) {
+            if (c.equals(chamado.getSolicitante()) && numero == chamado.getNumero() && chamado.chamadoFinalizado()) {
                 chamado.adicionarInteracao(descricao, c, 2);
                 achou = true;
             }
@@ -224,8 +215,8 @@ public class Sistema {
      */
     public void resolverChamado(int numero, Suporte sup, String descricao) {
         boolean achou = false;
-        for ( Chamado c : sup.getChamados()) {
-            if (numero == c.getNumero() && c.chamadoEmAndamento()) {
+        for ( Chamado c : this.chamados) {
+            if (c.possuiResponsavel() && sup.equals(c.getResponsavel()) && numero == c.getNumero() && c.chamadoEmAndamento()) {
                 c.adicionarInteracao(descricao, sup, 3);
                 achou = true;
             }
@@ -255,10 +246,4 @@ public class Sistema {
         }
         return false;
     }
-
-    public List<Salvavel> getSalvaveis() {
-        return this.salvaveis;
-    }
-
-
 }

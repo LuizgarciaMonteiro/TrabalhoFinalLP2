@@ -1,6 +1,7 @@
 package Atores;
 
 import java.util.Formatter;
+import java.util.List;
 
 /**
  * repreesenta um cliente
@@ -24,14 +25,17 @@ public class Cliente extends Usuario  {
 
     /**
      * imprime uma lista com todos os chamados do cliente.
+     * @param chamados lista com todos os chamados do sistema.
      * @return um boolean indicando se algum chamado foi impressso na tela.
      */
-    public boolean vizualizarChamados() {
+    public boolean vizualizarChamados(List<Chamado> chamados) {
         boolean achou = false;
         System.out.println("\nCHAMADOS:\n");
-        for (Chamado c : this.chamados) {
-            System.out.println(c);
-            achou = true;
+        for (Chamado c : chamados) {
+            if (this.equals(c.getSolicitante())) {
+                System.out.println(c);
+                achou = true;
+            }
         }
 
         if (!achou) {
@@ -45,13 +49,14 @@ public class Cliente extends Usuario  {
 
     /**
      * imprime uma lista com todos os chamados do cliente que foram finalizados.
+     * @param chamados lista com todos os chamados do sistema.
      * @return um boolean indicando se se algum chamado foi impresso na tela.
      */
-    public boolean vizualizarChamadosFinalizados() {
+    public boolean vizualizarChamadosFinalizados(List<Chamado> chamados) {
         boolean achou = false;
         System.out.println("\nCHAMADOS:\n");
-        for (Chamado c : this.chamados) {
-            if (c.chamadoFinalizado()) {
+        for (Chamado c : chamados) {
+            if (this.equals(c.getSolicitante()) && c.chamadoFinalizado()) {
                 System.out.println(c);
                 achou = true;
             }
@@ -76,7 +81,6 @@ public class Cliente extends Usuario  {
     public Chamado criarChamado(int numero, String titulo, String descricao) {
         Chamado c = new Chamado(numero, titulo, 1, this);
         c.adicionarInteracao(descricao, this, 1);
-        this.chamados.add(c);
         return c;
     }
     /**

@@ -6,15 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Scanner;
-
-/* LEITURA ESCRITA DOS DADOS EM AQUIVO TEXTO */
-
 
 /**
  * Classe auxiliar com metodos estaticos para leitura e escrita dos dados do sistema em arquivo.
@@ -146,14 +142,6 @@ public class LeituraEscritaArquivos {
         /* O chamado é criado, mas ainda sem as interações */
         Chamado c = new Chamado(numero, titulo, status, cli);
 
-        /* O chamado é inserido na lista de chamados do cliente que criou o chamado
-        * e na lista de chamados de seu atendente responsável (se houver). */
-        cli.inserirChamado(c);
-        if (sup != null) {
-            c.adicionarResponsavel(sup);
-            sup.inserirChamado(c);
-        }
-
         /* Leitura da lista de interacoes deste chamado  */
         int nInteracoes = lerInt(arquivo);
         for (int i = 0; i < nInteracoes; i++) {
@@ -164,7 +152,7 @@ public class LeituraEscritaArquivos {
             try {
                 /* lendo do arquivo uma data formatada no padrão (dia/mês/ano hora:minuto:segundo) */
                 String data = lerString(arquivo);
-                DateFormat formato = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss"); // Define the desired format
                 Date dataFormatada = (Date)formato.parse(data);
 
                 c.adicionarInteracao(descricao, u, dataFormatada);
@@ -196,10 +184,9 @@ public class LeituraEscritaArquivos {
             arquivo = new FileWriter("dados.txt");
             f = new Formatter(arquivo);
 
-            for (Salvavel sal : s.getSalvaveis()) {
-                /* Polimorfismo (cada objeto pode ser um usuario ou chamado) */
-                sal.salvarEmArquivo(f);
-            }
+            for (Cliente c : s.getClientes()) c.salvarEmArquivo(f);
+            for (Suporte sup : s.getAtendentes()) sup.salvarEmArquivo(f);
+            for (Chamado c : s.getChamados()) c.salvarEmArquivo(f);
 
             /* indica fim dos dados no arquivo */
             f.format("0\n");

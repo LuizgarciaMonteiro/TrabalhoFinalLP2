@@ -2,7 +2,6 @@ package EntradaSaida;
 
 import Atores.*;
 
-import java.security.PrivateKey;
 import java.util.Scanner;
 
 public class Entrada {
@@ -100,7 +99,7 @@ public class Entrada {
         while (opcao != 0) {
             switch (opcao) {
                 case 1:
-                    c.vizualizarChamados();
+                    c.vizualizarChamados(s.getChamados());
                     break;
                 case 2:
                     this.cadastrarChamado(s, c);
@@ -154,7 +153,7 @@ public class Entrada {
         while (opcao != 0) {
             switch (opcao) {
                 case 1:
-                    sup.vizualizarChamados();
+                    sup.vizualizarChamados(s.getChamados());
                     break;
                 case 2:
                     this.assumirChamado(s,sup);
@@ -249,7 +248,7 @@ public class Entrada {
      * @param c o cliente que esta logado no sistema.
      */
     public void cancelarChamado(Sistema s, Cliente c) {
-        if (c.vizualizarChamados()) {
+        if (c.vizualizarChamados(s.getChamados())) {
             try {
                 int numero = this.lerInt("\nDigite o número do chamado: #");
                 s.cancelarChamado(numero);
@@ -266,7 +265,7 @@ public class Entrada {
      * @param c o cliente que esta logado no sistema.
      */
     public void reabrirChamado(Sistema s, Cliente c) {
-        if (c.vizualizarChamadosFinalizados()) {
+        if (c.vizualizarChamadosFinalizados(s.getChamados())) {
             try {
                 int numero = this.lerInt("\nDigite o número do chamado: #");
                 String descricao = this.lerString("Digite o motivo: ");
@@ -304,7 +303,7 @@ public class Entrada {
      * @param sup o atendente que vai assumir este chamado.
      */
     public void resolverChamado(Sistema s, Suporte sup) {
-        if (sup.vizualizarChamados()) {
+        if (sup.vizualizarChamados(s.getChamados())) {
             try {
                 int numero = this.lerInt("\nDigite o número do chamado: #");
                 String descricao = this.lerString("Digite a solução: ");

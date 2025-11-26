@@ -48,6 +48,13 @@ public class Chamado implements Salvavel {
      * ocorreram neste chamado).
      */
     public String toString() {
+        /* Exemplo:
+        Chamado #1
+        Titulo: Internet
+        Descrição #1: Não consigo conectar (adicionada por Luiz Henrique em 25/11/2025 23:49:00)
+        Descrição #2: Conectei o cabo e resolveu! (adicionada por Rada em 25/11/2025 23:53:00)
+        Status atual: Finalizado
+         */
         String chamado = "Chamado #" + this.numero + "\n";
         chamado += "Titulo: " + this.titulo + "\n";
         int cont = 1;
@@ -135,13 +142,13 @@ public class Chamado implements Salvavel {
     /**
      * metodo que insere uma nova interação no chamado
      * @param descricao para descrição do chamado, ex: resolucao ou retorno.
-     * @param u seria o usuario que realizou a interação.
+     * @param u seria o usuario que realizou a interação (POLIMORFISMO) .
      * @param status é como o chamado está: Aberto, em andamento ou fechado
      */
     public void adicionarInteracao(String descricao, Usuario u, int status) {
 
         this.status = status;
-        this.interacoes.add(new Interacao(descricao, u));
+        this.interacoes.add(new Interacao(descricao, u, new Date()));
     }
 
     /**
@@ -176,7 +183,7 @@ public class Chamado implements Salvavel {
         f.format("%d\n", this.status);
         f.format("%s\n", this.solicitante.getEmail());
 
-        if (this.responsavel != null) {
+        if (this.possuiResponsavel()) {
             f.format("%s\n", this.responsavel.getEmail());
         }
         else {
@@ -192,9 +199,5 @@ public class Chamado implements Salvavel {
         }
     }
 
-    @Override
-    public String getId() {
-        return "Chamado #" + this.numero;
-    }
 
 }

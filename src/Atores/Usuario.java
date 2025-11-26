@@ -2,7 +2,6 @@ package Atores;
 
 import Persistencia.Salvavel;
 
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -19,9 +18,6 @@ public abstract class Usuario implements Salvavel {
     protected String email;
     protected String senha;
 
-    /** Lista com todos os chamados já criados por este usuário no sistema */
-    protected List<Chamado> chamados;
-
     /**
      * Constrói uma nova instância de Usuario com os dados fornecidos.
      * @param n o nome do usuário
@@ -35,8 +31,6 @@ public abstract class Usuario implements Salvavel {
         this.cpf = c;
         this.email = m;
         this.senha = s;
-
-        this.chamados = new ArrayList<>();
     }
 
     /**
@@ -64,14 +58,6 @@ public abstract class Usuario implements Salvavel {
     }
 
     /**
-     * Retorna uma lista com todos os chamados de um usuário.
-     * @return Lista com todos os chamados criados por um usuário.
-     */
-    public List<Chamado> getChamados() {
-        return this.chamados;
-    }
-
-    /**
      * Valida o acesso de um usuário no sistema.
      * @param senha a senha do usuário
      * @return Um booleano informando se os dados foram validados corretamente
@@ -89,33 +75,7 @@ public abstract class Usuario implements Salvavel {
      * Exibe os chamados do usuário.
      * @return Um booleano indicando que pelo menos um chamado foi exibido.
      */
-    public abstract boolean vizualizarChamados();
-
-    /**
-     * Metodo que adiciona um chamado à lista de chamados do usuário.
-     * @param c um objeto da classe Chamado
-     */
-    public void inserirChamado(Chamado c) {
-        this.chamados.add(c);
-    }
-
-    /**
-     * Remove o chamado de da lista de chamados do usuario.
-     * @param numero o identificados do chamado.
-     */
-    public void cancelarChamado(int numero) {
-        int pos = -1;
-        int i = 0;
-        for ( Chamado c : this.chamados) {
-            if (numero == c.getNumero()) {
-                pos = i;
-            }
-            i += 1;
-        }
-        if (pos != -1) {
-            this.chamados.remove(pos);
-        }
-    }
+    public abstract boolean vizualizarChamados(List<Chamado> chamados);
 
     /**
      * Como a classe Usuário implementa a interface Salvavel, é preciso implementar este metodo.
@@ -127,10 +87,6 @@ public abstract class Usuario implements Salvavel {
         f.format("%s\n", this.nome);
         f.format("%s\n", this.cpf);
         f.format("%s\n", this.senha);
-    }
-
-    public String getId() {
-        return "Usuário " + this.email;
     }
 
 }

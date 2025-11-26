@@ -18,17 +18,6 @@ public class Interacao implements Salvavel {
     private Date data;
 
     /**
-     * Construtor que recebe uma descrição e um usuário.
-     * A data de criacão será a data do sistema daquele momento.
-     */
-    public Interacao(String d, Usuario u) {
-
-        this.descricao = d;
-        this.usuario = u;
-        this.data = new Date();
-    }
-
-    /**
      * Construtor que recebe uma descrição, um usuário e a data que sera salva em arquivo.
      */
     public Interacao(String d, Usuario u, Date data) {
@@ -83,9 +72,5 @@ public class Interacao implements Salvavel {
         f.format("%s\n", dataFormatada);
     }
 
-    @Override
-    public String getId() {
-        return "Interação " + this.data.toString();
-    }
 
 }

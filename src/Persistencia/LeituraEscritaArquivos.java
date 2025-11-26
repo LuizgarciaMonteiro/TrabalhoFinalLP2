@@ -141,6 +141,7 @@ public class LeituraEscritaArquivos {
 
         /* O chamado é criado, mas ainda sem as interações */
         Chamado c = new Chamado(numero, titulo, status, cli);
+        c.adicionarResponsavel(sup);
 
         /* Leitura da lista de interacoes deste chamado  */
         int nInteracoes = lerInt(arquivo);

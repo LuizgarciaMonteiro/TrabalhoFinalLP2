@@ -32,7 +32,7 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/vitoroliversoares/SistemaChamadosHelpDesk.git](https://github.com/vitoroliversoares/SistemaChamadosHelpDesk.git)
+    git clone [https://github.com/LuizgarciaMonteiro/TrabalhoFinalLP2/tree/master/SistemaChamadosHelpDesk.git)
     ```
 
 2.  **Acesse a pasta do projeto:**

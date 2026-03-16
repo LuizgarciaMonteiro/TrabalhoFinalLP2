@@ -37,7 +37,7 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 
 2.  **Acesse a pasta do projeto:**
     ```bash
-    cd SistemaChamadosHelpDesk
+    cd TrabalhoFinalLP2
     ```
 
 3.  **Compile e execute:**

@@ -51,7 +51,7 @@ Este projeto foi desenvolvido com esforço e carinho pela seguinte equipe:
 
 | Nome | Função/Papel |
 | :--- | :--- |
-| **Luiz Henrique** | Desenvolvedor |
+| **Luiz Henrique Garcia** | Desenvolvedor |
 | **Radhaprema Messiano** | Desenvolvedora |
 | **Vitor Soares** | Desenvolvedor |
 | **Eduardo Bianchini** | Desenvolvedor |
